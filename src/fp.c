@@ -6,11 +6,14 @@
  */
 #include "fp.h"
 
-/**
+/** <blur> is just a name to identified the function
+ * This is the function in which we make the changes to the image
+ * @param imgName the name saved on disk for the image downloaded (This is the name returned by the downloadImage() function)
  * loads the image and applies the filter
+ * Returns the new name given to the image edited
  */
-char* blur(char* uri) {
-	return uri;
+char* blur(char* imgName) {
+	return NULL;
 }
 
 char* downloadImage(char* webPath){
