@@ -10,16 +10,13 @@
 #include <stdlib.h>
 #include "cv.h"
 #include "highgui.h"
+#include <libgen.h>
 
 /**
  * Computes the nth Fibonacci number
  * @see http://en.wikipedia.org/wiki/Fibonacci_number
  */
 char* blur(char* uri);
-
-void downloadImage(char* webPath);
-
-IplImage* loadImage(char* imgName);
 
 /**
  * This function is the big one of this assignment.
@@ -29,6 +26,7 @@ IplImage* loadImage(char* imgName);
  *
  * For example, if you go to:
  * http://localhost:8000/?f=fib&n=10
+ * http://tux64-14.cs.drexel.edu:8000/?f=blur&%=http://www.site.com/image/path.jpg
  * You should see:
  * 55
  * In your browser.
