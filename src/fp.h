@@ -16,7 +16,7 @@
  * Computes the nth Fibonacci number
  * @see http://en.wikipedia.org/wiki/Fibonacci_number
  */
-char* blur(char* uri);
+char* blur(char* imgName);
 
 /**
  * This function is the big one of this assignment.
