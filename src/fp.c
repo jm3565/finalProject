@@ -2,7 +2,7 @@
  * fp.c
  *
  *  handle_request inherited from hw2 assignment and edited as needed
- * 
+ *  Author: Juan Munoz
  */
 #include "fp.h"
 
@@ -16,6 +16,11 @@ char* blur(char* imgName) {
 	return NULL;
 }
 
+/**
+ * This is the fucntion that downloads a jpg image from the web
+ * Saves the image found at the given webPath in the 'images' folder
+ * Returns the name of the image
+ */
 char* downloadImage(char* webPath){
 	pid_t pid;
         char * fileName;
@@ -34,6 +39,11 @@ char* downloadImage(char* webPath){
         return fileName;
 }
 
+/**
+ * This is the function to load an image with OpenCV to do the transformations
+ * Receives the file name of the image downloaded
+ * Returns a pointer to the IplImage
+ */
 IplImage* loadImage(char* imgName){
 	IplImage* rv;
 
@@ -118,20 +128,17 @@ int sendImage(char * imgEdited, int conSocket){
 
 
 /**
- * This function is the big one of this assignment.
+ * BASE CODE OF THIS FUNCTION IS FROM HW2
  * It takes a string representing the HTTP request, parses the
- * values from the GET variables, creates an HTTP response,
+ * values from the GET variables and calls the function requested,
  * and fills it with the results of one of the above functions.
  *
  * For example, if you go to:
- * http://localhost:8000/?f=fib&n=10
- * You should see:
- * 55
- * In your browser.
- *
- * Note the request above will have the first line be:
- * GET /?f=fib&n=10 HTTP/1.1
- * So you'll have to use a tokenizer to pull out the "10" and "f=fib"
+ * http://localhost:8000/?f=blur&%=http://img1.wikia.nocookie.net/__cb20110502031006/uncyclopedia/images/c/c9/Boardroom_small.jpg
+ * The Boardroom_small.jpg is downloaded to the 'images' folder
+ * calls the 'blur' function to transform the image
+ * sets up the HTTP response with the new image generated
+ * and displays it in the browser
  */
 char* handle_request(char * req) {
 	char * rv; // This will be our return value
