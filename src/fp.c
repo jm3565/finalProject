@@ -58,6 +58,10 @@ IplImage* loadImage(char* imgName){
 	return rv;
 }
 
+// This is the initial function supposed to send the HTTP response to the web browser
+// It is not used in the final code, just here for the purpose of showing our initial 
+// approach for this issue
+
 int sendImage(char * imgEdited, int conSocket){
 //char* sendImage(char * imgEdited){
         char * res;
@@ -75,17 +79,6 @@ int sendImage(char * imgEdited, int conSocket){
         strcat(fname, IMGFOLDER); /* build the path name of the file */
         strcat(fname, "/");
         strcat(fname, imgEdited);
-
-        /*
-        fd = open(fname, O_RDONLY);
-        if(fd == -1){
-                fprintf(stderr, "unable to open '%s'", fname);
-                exit(1);
-        }
-        fstat(fd, &stat_buf);
-
-        offset = 0;
-        */
 
         /*
         ifp = fopen(fname, "r+b");
@@ -141,15 +134,14 @@ int sendImage(char * imgEdited, int conSocket){
  * and displays it in the browser
  */
 char* handle_request(char * req) {
-	char * rv; // This will be our return value
 	char * res; // This will point to a location in rv where we can write the html to.
 	char * ftoken; // this will be a token that we pull out of the 'path' variable indicating the function
 	               // for example, if you go to http://localhost:8000/?f=fib&n=10, this will be "f=fib"
 	char * atoken; // A token representing the argument to the function, i.e., "n=10"
 	char * tmp; // used to point to where the arguments start
 	
-	char * imgDownloaded;
-    char * imgEdited;
+	char * imgDownloaded; // This is the name of the file downloaded from the web
+    char * imgEdited; // This is the name of the file edited
 
 /*
 	rv = malloc(4096 * sizeof(char));// TODO: allocate a big chunk of memory for the result. Like 2048 characters
@@ -191,12 +183,11 @@ char* handle_request(char * req) {
                 //1)download the image (sets fileName of downloaded image)
                         // param: the webPath of the image
                         // returns 0 on success, -1 on error
-                //imgDownloaded = downloadImage(atoken);
-                imgEdited = downloadImage(atoken);
+                imgDownloaded = downloadImage(atoken);
                 //2)call function requested (sets the name of the imaged edited)
                         // param: the name of the image downloaded
                         // returns 0 on success, -1 on error
-                //imgEdited = blur(imgDownloaded);
+                imgEdited = blur(imgDownloaded);
                 //printf("imgE: %s\n", imgEdited);
                 //3)open the image changed and send the HTTP response
                         // param: the name of the image edited
