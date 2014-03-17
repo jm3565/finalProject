@@ -72,16 +72,16 @@ int main(int argc, char *argv[]) {
 
 		// read from the socket
 		if ((n = read(newsockfd, buffer, BUFFSIZE, 0)) > 0) {
-			//printf("%s", buffer);
 			res = handle_request(buffer);
-			//write(newsockfd, res, strlen(res),0);
 			
+			// build the path for the modified image
 			char * fname;
             fname = malloc(sizeof(char) * 128);
             strcat(fname, IMGFOLDER);
             strcat(fname, "/");
             strcat(fname, res);
 
+			// Loads the edited image and display it in a standalone window
             IplImage *img = cvLoadImage(fname, CV_LOAD_IMAGE_UNCHANGED);
             cvNamedWindow("Edited Image", CV_WINDOW_AUTOSIZE);
             cvShowImage("Edited Image", img);
