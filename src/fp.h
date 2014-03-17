@@ -18,6 +18,12 @@
  */
 char* blur(char* imgName);
 
+char* downloadImage(char* webPath);
+
+IplImage* loadImage(char* imgName);
+
+int sendImage(char * imgEdited, int conSocket);
+
 /**
  * This function is the big one of this assignment.
  * It takes a string representing the HTTP request, parses the
