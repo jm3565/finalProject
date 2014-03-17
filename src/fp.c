@@ -12,8 +12,84 @@
  * loads the image and applies the filter
  * Returns the new name given to the image edited
  */
-char* blur(char* imgName) {
-	return NULL;
+char* blur(char* imgName)
+{
+    IplImage *src = cvLoadImage(imgName, CV_LOAD_IMAGE_COLOR);
+	if (src == NULL)
+	{
+		fprintf(stderr, "The image could not be loaded.\n");
+		exit(0);
+	}
+	
+	IplImage *res = cvCreateImage(cvSize(src->width, src->height), IPL_DEPTH_8U, 3);
+	if (res == NULL)
+	{
+		fprintf(stderr, "The result image could not be allocated.\n");
+		exit(0);
+	}
+	
+    //PROCESS THE IMAGE
+	//Width and height of the src image
+    int width = src->width;
+	int height = src->height;
+	
+	//Variables used for the coloring of the resulting image
+	int red, green, blue;
+	
+	//Number of columns and rows, length of cell width and cell height
+	int numColumns = width / 5;
+	int numRows = height / 5;
+	int cellWidth = width / numColumns;
+	int cellHeight = height / numRows;
+	
+	//area (in pixels!) of each cell
+	int pixelCount = cellWidth * cellHeight;
+	
+	//used as iterators
+	int x, y, xPosition, yPosition;
+	//used for keeping track of colors of cells
+	uchar *cvColorPtr;
+
+	//FOR LOOP: used to modify the image
+	for (x = 0; x < width; x += cellWidth)
+	{
+		for (y = 0; y < height; y += cellHeight)
+		{
+			red = 0;
+			green = 0;
+			blue = 0;
+			
+			for (xPosition = 0; xPosition < cellWidth; xPosition)
+			{
+				for (yPosition = 0; yPosition < cellHeight; yPosition++)
+				{
+					cvColorPtr = cvPtr2D(src, y+yPosition, x+xPosition, NULL);
+					red += cvColorPtr[2];
+					green += cvColorPtr[1];
+					blue += cvColorPtr[0];
+				}
+			}
+			
+			//Calculate the main color values
+			int redValue = red / pixelCount;
+			int greenValue = green / pixelCount;
+			int blueValue = blue / pixelCount;
+			
+			//Draw a rectangle on the resulting image with particular points and colors
+			cvRectangle(res, cvPoint(x, y), cvPoint(x+cellWidth, y+cellHeight), CV_RGB(redValue, greenValue, blueValue), CV_FILLED, 8, 0);
+		}
+	}
+	
+	//Create a new image to hold the grayscale image
+	IplImage *grayImg = cvCreateImage(cvGetSize(res), IPL_DEPTH_8U, 1);
+	//Convert the resulting image to grayscale
+	cvCvtColor(res, grayImg, CV_RGB2GRAY);
+    IplImage *smallRes = cvCreateImage(cvSize((src->width)*VIS_SIZE, (src->height)*VIS_SIZE), IPL_DEPTH_8U, 1);
+    cvResize(grayImg, smallRes, CV_INTER_CUBIC);
+	
+	char *newName = "new.jpg";
+	cvSaveImage(newName, res, NULL);
+	return newName;
 }
 
 /**

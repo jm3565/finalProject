@@ -1,6 +1,6 @@
 CC=gcc
 FLAGS=-I./src/ `pkg-config --cflags opencv` -fopenmp
-TARGETS=FinalProjectEx
+TARGETS=opencvex
 LIBS=-lm `pkg-config --libs opencv` -fopenmp
 
 main: $(TARGETS)
@@ -12,5 +12,5 @@ lib/%.o: src/%.c
 clean:
 	rm -f $(TARGETS) lib/*.o
 
-%:lib/%.o lib/FinalProject.o
+%:lib/%.o lib/opencv.o
 	$(CC) -o $@ $^ $(LIBS)
