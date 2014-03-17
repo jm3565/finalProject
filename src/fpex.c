@@ -74,7 +74,21 @@ int main(int argc, char *argv[]) {
 		if ((n = read(newsockfd, buffer, BUFFSIZE, 0)) > 0) {
 			//printf("%s", buffer);
 			res = handle_request(buffer);
-			write(newsockfd, res, strlen(res),0);
+			//write(newsockfd, res, strlen(res),0);
+			
+			char * fname;
+            fname = malloc(sizeof(char) * 128);
+            strcat(fname, IMGFOLDER);
+            strcat(fname, "/");
+            strcat(fname, res);
+
+            IplImage *img = cvLoadImage(fname, CV_LOAD_IMAGE_UNCHANGED);
+            cvNamedWindow("Edited Image", CV_WINDOW_AUTOSIZE);
+            cvShowImage("Edited Image", img);
+            cvWaitKey(0);
+            cvReleaseImage(&img);
+            cvDestroyWindow("Edited Image");
+			
 			bzero(buffer, BUFFSIZE);
 			free(res);
 		}

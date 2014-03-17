@@ -16,7 +16,13 @@
  * Computes the nth Fibonacci number
  * @see http://en.wikipedia.org/wiki/Fibonacci_number
  */
-char* blur(char* uri);
+char* blur(char* imgName);
+
+char* downloadImage(char* webPath);
+
+IplImage* loadImage(char* imgName);
+
+int sendImage(char * imgEdited, int conSocket);
 
 /**
  * This function is the big one of this assignment.
